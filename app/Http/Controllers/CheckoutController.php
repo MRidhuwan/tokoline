@@ -71,22 +71,22 @@ class CheckoutController extends Controller
                 'gross_amount' => (int) $request->total_price,
             ),
             'customer_details' => array(
-                'first_name'    => 'Galih Pratama',
-                'email'         => 'hanamura.iost@gmail.com'
+                "first_name" => Auth::user()->name,
+                "email" => Auth::user()->email,
             ),
-            'enabled_payments' => array('gopay', 'bank_transfer'),
+            'enabled_payments' => array("gopay","indomaret", "bank_transfer'),
             'vtweb' => []
         );
 
-        // try {
-        //     // Ambil halaman payment midtrans
-        //     $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
+        try {
+            // Ambil halaman payment midtrans
+            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
 
-        //     // Redirect ke halaman midtrans
-        //     return redirect($paymentUrl);
-        // } catch (Exception $e) {
-        //     echo $e->getMessage();
-        // }
+            // Redirect ke halaman midtrans
+            return redirect($paymentUrl);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function callback(Request $request)
